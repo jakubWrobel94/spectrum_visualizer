@@ -52,7 +52,8 @@ class InputAudioStreamProvider:
     def _callback_function(self, in_data, frame_count, time_info, status):
         frames = np.frombuffer(in_data, dtype=np.float32).reshape(-1, self.channels_number)
         self.current_chunk = frames[:, self.input_channel_index]
-        return in_data, pa.paComplete
+        self._notify_observes()
+        return in_data, pa.paContinue
 
     def add_observer(self, observer):
         self._observers.append(observer)

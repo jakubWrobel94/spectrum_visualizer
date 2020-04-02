@@ -5,6 +5,8 @@ from fft_handler import FftHandler
 class RealTimeSpectrumController:
     def __init__(self):
         self.input_devices_info = InputAudioStreamProvider.get_input_available_devices()
+        self.output_devices_info = InputAudioStreamProvider.get_output_available_devices()
+        self.all_host_api_info = InputAudioStreamProvider.get_all_host_api_info()
 
         default_host_api_info = InputAudioStreamProvider.get_default_host_api_info()
         default_input_device_info = InputAudioStreamProvider.get_default_input_device()
@@ -88,6 +90,54 @@ class RealTimeSpectrumController:
         self.input_channel_index = value
         self.close_stream()
         self.stream_provider.input_channel_index = value
+
+    def set_input_device_by_name(self, input_device_name):
+        self.input_device_name = input_device_name
+        for index, device_info in self.input_devices_info.items():
+            if device_info['name'] == input_device_name:
+                self.input_device_index = index
+                break
+        self.stop_stream()
+        self.stream_provider.input_device_index = self.input_device_index
+
+    def set_output_device_by_name(self, output_device_name):
+        self.input_device_name = output_device_name
+        for index, device_info in self.input_devices_info.items():
+            if device_info['name'] == output_device_name:
+                self.output_device_index = index
+                break
+        self.stop_stream()
+        self.stream_provider.output_device_index = self.output_device_index
+
+    def get_all_host_api_names(self):
+        host_api_names = []
+        for host_api in self.all_host_api_info.values():
+            host_api_names.append(host_api['name'])
+        return host_api_names
+
+    def get_input_devices_by_host_api_name(self, host_api_name):
+        for index, host_api in self.all_host_api_info.items():
+            if host_api['name'] == host_api_name:
+                break
+        input_devices = self.stream_provider.get_input_devices_by_host_api_index(index)
+        return input_devices
+
+    def get_output_devices_by_host_api_name(self, host_api_name):
+        for index, host_api in self.all_host_api_info.items():
+            if host_api['name'] == host_api_name:
+                break
+        output_devices = self.stream_provider.get_output_devices_by_host_api_index(index)
+        return output_devices
+
+    def get_input_devices_names_by_host_api_name(self, host_api_name):
+        input_devices = self.get_input_devices_by_host_api_name(host_api_name)
+        input_devices_names = [dev['name'] for dev in input_devices.values()]
+        return input_devices_names
+
+    def get_output_devices_names_by_host_api_name(self, host_api_name):
+        output_devices = self.get_output_devices_by_host_api_name(host_api_name)
+        output_devices_names = [dev['name'] for dev in output_devices.values()]
+        return output_devices_names
 
 
 if __name__ == '__main__':

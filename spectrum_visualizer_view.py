@@ -9,6 +9,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from real_time_spectrum_controller import RealTimeSpectrumController
+import pyqtgraph as pg
 
 
 class SpectrumVisualizerView:
@@ -17,63 +18,56 @@ class SpectrumVisualizerView:
         self.setupUi(form)
         self.fill_defaults()
         self.connect_signals()
+        self.plot_window = pg.GraphicsWindow()
+        self.spectrum_plot = self.plot_window.addPlot()
+        self.plot_window_layout.addWidget(self.plot_window)
 
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(983, 495)
-
-        self.plot_widget = QtWidgets.QWidget(Form)
-        self.plot_widget.setGeometry(QtCore.QRect(10, 10, 731, 471))
-        self.plot_widget.setObjectName("plot_widget")
-
+        Form.resize(981, 370)
         self.input_options_box = QtWidgets.QGroupBox(Form)
-        self.input_options_box.setGeometry(QtCore.QRect(750, 10, 225, 157))
+        self.input_options_box.setGeometry(QtCore.QRect(664, 10, 311, 181))
         self.input_options_box.setObjectName("input_options_box")
-
         self.gridLayout = QtWidgets.QGridLayout(self.input_options_box)
         self.gridLayout.setObjectName("gridLayout")
-
-        self.host_api_label = QtWidgets.QLabel(self.input_options_box)
-        self.host_api_label.setObjectName("host_api_label")
-
-        self.gridLayout.addWidget(self.host_api_label, 0, 0, 1, 1)
-
-        self.host_api_combo_box = QtWidgets.QComboBox(self.input_options_box)
-        self.host_api_combo_box.setObjectName("host_api_combo_box")
-
-        self.gridLayout.addWidget(self.host_api_combo_box, 0, 1, 1, 1)
-
-        self.input_device_label = QtWidgets.QLabel(self.input_options_box)
-        self.input_device_label.setObjectName("input_device_label")
-        self.gridLayout.addWidget(self.input_device_label, 1, 0, 1, 1)
-
-        self.input_device_combo_box = QtWidgets.QComboBox(self.input_options_box)
-        self.input_device_combo_box.setObjectName("input_device_combo_box")
-        self.gridLayout.addWidget(self.input_device_combo_box, 1, 1, 2, 1)
-
-        self.output_device_label = QtWidgets.QLabel(self.input_options_box)
-        self.output_device_label.setObjectName("output_device_label")
-        self.gridLayout.addWidget(self.output_device_label, 2, 0, 2, 1)
-
         self.output_device_combo_box = QtWidgets.QComboBox(self.input_options_box)
         self.output_device_combo_box.setObjectName("output_device_combo_box")
         self.gridLayout.addWidget(self.output_device_combo_box, 3, 1, 1, 1)
-
-        self.chunk_size_label = QtWidgets.QLabel(self.input_options_box)
-        self.chunk_size_label.setObjectName("chunk_size_label")
-        self.gridLayout.addWidget(self.chunk_size_label, 4, 0, 1, 1)
-
         self.chunk_size_text_field = QtWidgets.QLineEdit(self.input_options_box)
         self.chunk_size_text_field.setObjectName("chunk_size_text_field")
-        self.gridLayout.addWidget(self.chunk_size_text_field, 4, 1, 1, 1)
-        self.sample_rate_label = QtWidgets.QLabel(self.input_options_box)
-        self.sample_rate_label.setObjectName("sample_rate_label")
-        self.gridLayout.addWidget(self.sample_rate_label, 5, 0, 1, 1)
+        self.gridLayout.addWidget(self.chunk_size_text_field, 5, 1, 1, 1)
+        self.input_device_label = QtWidgets.QLabel(self.input_options_box)
+        self.input_device_label.setObjectName("input_device_label")
+        self.gridLayout.addWidget(self.input_device_label, 1, 0, 1, 1)
+        self.chunk_size_label = QtWidgets.QLabel(self.input_options_box)
+        self.chunk_size_label.setObjectName("chunk_size_label")
+        self.gridLayout.addWidget(self.chunk_size_label, 5, 0, 1, 1)
         self.sample_rate_text_field = QtWidgets.QLineEdit(self.input_options_box)
         self.sample_rate_text_field.setObjectName("sample_rate_text_field")
-        self.gridLayout.addWidget(self.sample_rate_text_field, 5, 1, 1, 1)
+        self.gridLayout.addWidget(self.sample_rate_text_field, 6, 1, 1, 1)
+        self.output_device_label = QtWidgets.QLabel(self.input_options_box)
+        self.output_device_label.setObjectName("output_device_label")
+        self.gridLayout.addWidget(self.output_device_label, 2, 0, 2, 1)
+        self.host_api_label = QtWidgets.QLabel(self.input_options_box)
+        self.host_api_label.setObjectName("host_api_label")
+        self.gridLayout.addWidget(self.host_api_label, 0, 0, 1, 1)
+        self.host_api_combo_box = QtWidgets.QComboBox(self.input_options_box)
+        self.host_api_combo_box.setObjectName("host_api_combo_box")
+        self.gridLayout.addWidget(self.host_api_combo_box, 0, 1, 1, 1)
+        self.input_device_combo_box = QtWidgets.QComboBox(self.input_options_box)
+        self.input_device_combo_box.setObjectName("input_device_combo_box")
+        self.gridLayout.addWidget(self.input_device_combo_box, 1, 1, 2, 1)
+        self.sample_rate_label = QtWidgets.QLabel(self.input_options_box)
+        self.sample_rate_label.setObjectName("sample_rate_label")
+        self.gridLayout.addWidget(self.sample_rate_label, 6, 0, 1, 1)
+        self.comboBox = QtWidgets.QComboBox(self.input_options_box)
+        self.comboBox.setObjectName("comboBox")
+        self.gridLayout.addWidget(self.comboBox, 4, 1, 1, 1)
+        self.in_channel_idx_label = QtWidgets.QLabel(self.input_options_box)
+        self.in_channel_idx_label.setObjectName("in_channel_idx_label")
+        self.gridLayout.addWidget(self.in_channel_idx_label, 4, 0, 1, 1)
         self.groupBox = QtWidgets.QGroupBox(Form)
-        self.groupBox.setGeometry(QtCore.QRect(750, 170, 223, 53))
+        self.groupBox.setGeometry(QtCore.QRect(660, 200, 311, 51))
         self.groupBox.setObjectName("groupBox")
         self.gridLayout_2 = QtWidgets.QGridLayout(self.groupBox)
         self.gridLayout_2.setObjectName("gridLayout_2")
@@ -85,14 +79,18 @@ class SpectrumVisualizerView:
         self.nfft_text_field = QtWidgets.QLineEdit(self.groupBox)
         self.nfft_text_field.setObjectName("nfft_text_field")
         self.gridLayout_2.addWidget(self.nfft_text_field, 0, 2, 1, 1)
-
         self.start_button = QtWidgets.QPushButton(Form)
-        self.start_button.setGeometry(QtCore.QRect(750, 450, 91, 31))
+        self.start_button.setGeometry(QtCore.QRect(700, 330, 91, 31))
         self.start_button.setObjectName("start_button")
-
         self.stop_button = QtWidgets.QPushButton(Form)
-        self.stop_button.setGeometry(QtCore.QRect(870, 450, 91, 31))
+        self.stop_button.setGeometry(QtCore.QRect(840, 330, 91, 31))
         self.stop_button.setObjectName("stop_button")
+        self.gridLayoutWidget = QtWidgets.QWidget(Form)
+        self.gridLayoutWidget.setGeometry(QtCore.QRect(10, 10, 641, 351))
+        self.gridLayoutWidget.setObjectName("gridLayoutWidget")
+        self.plot_window_layout = QtWidgets.QGridLayout(self.gridLayoutWidget)
+        self.plot_window_layout.setContentsMargins(0, 0, 0, 0)
+        self.plot_window_layout.setObjectName("plot_window_layout")
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -106,6 +104,7 @@ class SpectrumVisualizerView:
         self.output_device_label.setText(_translate("Form", "output device"))
         self.chunk_size_label.setText(_translate("Form", "chunk size"))
         self.sample_rate_label.setText(_translate("Form", "sample rate"))
+        self.in_channel_idx_label.setText(_translate("Form", "in channel idx label"))
         self.groupBox.setTitle(_translate("Form", "Spectrum options"))
         self.nfft_label.setText(_translate("Form", "nfft"))
         self.start_button.setText(_translate("Form", "Start"))

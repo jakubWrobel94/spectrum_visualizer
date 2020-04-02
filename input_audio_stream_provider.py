@@ -79,6 +79,15 @@ class InputAudioStreamProvider:
         return input_devices
 
     @staticmethod
+    def get_output_available_devices():
+        output_devices = {}
+        for device_index in range(InputAudioStreamProvider._py_audio_obj.get_device_count()):
+            device_info = InputAudioStreamProvider._py_audio_obj.get_device_info_by_index(device_index)
+            if device_info['maxOutputChannels'] > 0:
+                output_devices[device_index] = device_info
+        return output_devices
+
+    @staticmethod
     def get_default_host_api_info():
         return InputAudioStreamProvider._py_audio_obj.get_default_host_api_info()
 

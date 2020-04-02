@@ -6,36 +6,56 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>983</width>
-    <height>495</height>
+    <width>981</width>
+    <height>370</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QWidget" name="plot_widget" native="true">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>731</width>
-     <height>471</height>
-    </rect>
-   </property>
-  </widget>
   <widget class="QGroupBox" name="input_options_box">
    <property name="geometry">
     <rect>
-     <x>750</x>
+     <x>664</x>
      <y>10</y>
-     <width>225</width>
-     <height>157</height>
+     <width>311</width>
+     <height>181</height>
     </rect>
    </property>
    <property name="title">
     <string>Input options</string>
    </property>
    <layout class="QGridLayout" name="gridLayout">
+    <item row="3" column="1">
+     <widget class="QComboBox" name="output_device_combo_box"/>
+    </item>
+    <item row="5" column="1">
+     <widget class="QLineEdit" name="chunk_size_text_field"/>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="input_device_label">
+      <property name="text">
+       <string>input device</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="0">
+     <widget class="QLabel" name="chunk_size_label">
+      <property name="text">
+       <string>chunk size</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="1">
+     <widget class="QLineEdit" name="sample_rate_text_field"/>
+    </item>
+    <item row="2" column="0" rowspan="2">
+     <widget class="QLabel" name="output_device_label">
+      <property name="text">
+       <string>output device</string>
+      </property>
+     </widget>
+    </item>
     <item row="0" column="0">
      <widget class="QLabel" name="host_api_label">
       <property name="text">
@@ -46,55 +66,35 @@
     <item row="0" column="1">
      <widget class="QComboBox" name="host_api_combo_box"/>
     </item>
-    <item row="1" column="0">
-     <widget class="QLabel" name="input_device_label">
-      <property name="text">
-       <string>input device</string>
-      </property>
-     </widget>
-    </item>
     <item row="1" column="1" rowspan="2">
      <widget class="QComboBox" name="input_device_combo_box"/>
     </item>
-    <item row="2" column="0" rowspan="2">
-     <widget class="QLabel" name="output_device_label">
-      <property name="text">
-       <string>output device</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="1">
-     <widget class="QComboBox" name="output_device_combo_box"/>
-    </item>
-    <item row="4" column="0">
-     <widget class="QLabel" name="chunk_size_label">
-      <property name="text">
-       <string>chunk size</string>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="1">
-     <widget class="QLineEdit" name="chunk_size_text_field"/>
-    </item>
-    <item row="5" column="0">
+    <item row="6" column="0">
      <widget class="QLabel" name="sample_rate_label">
       <property name="text">
        <string>sample rate</string>
       </property>
      </widget>
     </item>
-    <item row="5" column="1">
-     <widget class="QLineEdit" name="sample_rate_text_field"/>
+    <item row="4" column="1">
+     <widget class="QComboBox" name="comboBox"/>
+    </item>
+    <item row="4" column="0">
+     <widget class="QLabel" name="in_channel_idx_label">
+      <property name="text">
+       <string>in channel idx</string>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
-     <x>750</x>
-     <y>170</y>
-     <width>223</width>
-     <height>53</height>
+     <x>660</x>
+     <y>200</y>
+     <width>311</width>
+     <height>51</height>
     </rect>
    </property>
    <property name="title">
@@ -126,11 +126,11 @@
     </item>
    </layout>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="start_button">
    <property name="geometry">
     <rect>
-     <x>750</x>
-     <y>450</y>
+     <x>700</x>
+     <y>330</y>
      <width>91</width>
      <height>31</height>
     </rect>
@@ -139,11 +139,11 @@
     <string>Start</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_2">
+  <widget class="QPushButton" name="stop_button">
    <property name="geometry">
     <rect>
-     <x>870</x>
-     <y>450</y>
+     <x>840</x>
+     <y>330</y>
      <width>91</width>
      <height>31</height>
     </rect>
@@ -151,6 +151,17 @@
    <property name="text">
     <string>Stop</string>
    </property>
+  </widget>
+  <widget class="QWidget" name="gridLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>641</width>
+     <height>351</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="plot_window_layout"/>
   </widget>
  </widget>
  <resources/>
